@@ -469,8 +469,8 @@ python scripts\monitor_new_videos.py --once
 
 如有问题或建议，请通过以下方式联系：
 
-- **Issue**: [GitHub Issues](https://github.com/your-username/aiv-mos-v4/issues)
-- **Email**: your-email@example.com
+- **Issue**: [GitHub Issues](https://github.com/hang23303051/AIGC/issues)
+- **Email**: qihang6@mail2.sysu.edu.cn
 
 ---
 
