@@ -1,0 +1,2 @@
+shot1: A yellow crane on a flatbed truck lifts a large, rectangular metal object from the back of another red and white flatbed truck parked in front of it at a construction site filled with scaffolding, various building materials, and other vehicles including additional trucks and containers.
+shot2: A yellow crane (o3) lifts a large, rectangular metal object from the back of a flatbed truck (o1), while another similar vehicle (o2) and several workers (o4, o5, o6) are visible on site; scaffolding (o7) surrounds the building under construction in the background.

@@ -1,0 +1,4 @@
+shot1: A large, tall tree with dense foliage stands prominently in the foreground under a dark and cloudy sky, while horizontal power lines stretch across the dimly lit scene.
+shot2: A large, tall tree with dense foliage stands prominently in the foreground under a dark and cloudy sky, where lightning briefly illuminates the scene before fading back into darkness, revealing horizontal power lines stretching across the dimly lit landscape.
+shot5: A tall tree with dense foliage stands prominently in the foreground, silhouetted against a dark sky filled with heavy clouds; horizontal power lines stretch across the dimly lit scene as lightning briefly illuminates the otherwise gloomy atmosphere.
+shot7: The sky is dark with heavy, ominous clouds, a tall tree with dense foliage stands prominently on the right side of the frame, and a horizontal power line stretches across the scene from left to right.

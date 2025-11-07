@@ -1,0 +1,4 @@
+shot1: A man is running on a road, wearing black shorts, white socks, pink running shoes, sunglasses, and a white tank top; he runs past a metal guardrail with green vegetation in the background.
+shot4: A man wearing a white tank top, black shorts, pink running shoes, sunglasses, and white socks is running on a road in front of a metal guardrail with lush green vegetation nearby; he continues to run downhill while text overlays appear at the bottom of the screen.
+shot6: A man wearing a white tank top, black shorts, pink running shoes, sunglasses, and white socks is seen running on a road in front of a metal guardrail with green vegetation visible behind it.
+shot9: A man wearing a white tank top, black shorts, pink running shoes, sunglasses, and white socks is running on a road next to a metal guardrail with green vegetation in the background; he continues his run past the guardrail while text overlays appear at the bottom of the screen.

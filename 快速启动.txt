@@ -1,0 +1,129 @@
+================================================================================
+  AIV视频评测系统 - 快速启动卡片
+================================================================================
+
+🎯 系统：3人评测制 | 2239个视频对 | 每人平均~672次评测
+================================================================================
+
+【首次部署】
+================================================================================
+
+1️⃣ 准备数据
+   D:\miniconda3\envs\learn\python.exe scripts\prepare_data.py
+
+2️⃣ 数据库迁移
+   D:\miniconda3\envs\learn\python.exe scripts\migrate_v1_to_v2.py
+   输入 yes 确认
+   Move-Item aiv_eval_v4_v2.db aiv_eval_v4.db
+
+3️⃣ 防火墙配置（管理员PowerShell，只需一次）
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\scripts\setup_firewall.ps1
+
+4️⃣ 启动服务
+   .\lan_start_with_monitor.ps1
+
+================================================================================
+
+【日常操作】
+================================================================================
+
+启动：   .\lan_start_with_monitor.ps1
+停止：   .\lan_stop.ps1
+进度：   D:\miniconda3\envs\learn\python.exe check_progress.py
+导出：   .\export_all.ps1
+链接：   D:\miniconda3\envs\learn\python.exe get_links.py
+版本：   D:\miniconda3\envs\learn\python.exe check_db_version.py
+查询：   D:\miniconda3\envs\learn\python.exe query_video_status.py <sample_id> <modelname>
+
+打散任务（避免同一参考视频的模型任务连续出现）：
+   .\lan_stop.ps1
+   D:\miniconda3\envs\learn\python.exe scripts\shuffle_pending_tasks.py
+   .\lan_start_with_monitor.ps1
+
+================================================================================
+
+【核心逻辑】
+================================================================================
+
+✅ 每个视频对需要任意3个评审员评测
+✅ 评满3次自动完成，从所有人列表中移除
+✅ 已评过的任务显示在"已完成"进度中
+✅ 工作量降低70%（从14640次→6717次）
+
+================================================================================
+
+【故障排除】
+================================================================================
+
+端口占用：
+  netstat -ano | findstr "8502"
+  taskkill /PID <PID> /F
+  .\lan_start_with_monitor.ps1
+
+视频无法加载：
+  D:\miniconda3\envs\learn\python.exe scripts\prepare_data.py
+  .\lan_stop.ps1
+  .\lan_start_with_monitor.ps1
+
+进度显示错误：
+  D:\miniconda3\envs\learn\python.exe check_db_version.py
+  # 应显示：✅ V2系统（3人评测制）
+
+Prompt显示sample_id而不是文本：
+  D:\miniconda3\envs\learn\python.exe scripts\fix_prompt_text.py
+  .\lan_stop.ps1
+  .\lan_start_with_monitor.ps1
+
+返回按钮失效：
+  # 已修复，刷新浏览器（Ctrl+Shift+R）即可
+
+监控窗口看起来卡住：
+  # 可能正在处理大量数据，等待30秒观察输出
+  # 或按Ctrl+C停止，运行测试：
+  D:\miniconda3\envs\learn\python.exe -u scripts\monitor_new_videos.py --once
+
+================================================================================
+
+【监控功能】
+================================================================================
+
+自动监控（推荐）：
+  使用 .\lan_start_with_monitor.ps1 启动
+  每5分钟自动扫描
+  - 新增视频 → 自动创建任务 → 自动随机打散
+  - 删除视频 → 清理未完成任务
+  - 保留已完成评分
+
+监控窗口：
+  窗口标题："Video Monitor - Every 300 sec"
+  启动行为：立即执行第一次扫描（无需等待）
+  显示内容：
+    - "✅ 监控服务已启动，准备开始第一次扫描..."
+    - [1/4] 到 [4/4] 实时进度提示
+    - [YYYY-MM-DD HH:MM:SS] 扫描开始/完成时间
+    - 检测到的新增/删除视频
+    - 任务更新统计
+  首次扫描：通常在启动后15-30秒内完成
+
+手动监控：
+  立即扫描：D:\miniconda3\envs\learn\python.exe scripts\monitor_new_videos.py --once
+  持续监控：D:\miniconda3\envs\learn\python.exe scripts\monitor_new_videos.py
+
+✅ 新增任务自动随机打散，避免同一参考视频的模型任务连续出现
+
+================================================================================
+
+【数据安全】
+================================================================================
+
+✅ 已完成的评分永不删除（即使视频被删除）
+✅ 未完成任务自动清理（视频删除或任务完成）
+✅ 定期备份数据库和导出数据
+
+================================================================================
+
+详细文档：启动流程.md | QUICK_START.txt | 完整启动流程.md
+版本：V2 (3人评测制) | 更新：2025-10-31
+================================================================================
+

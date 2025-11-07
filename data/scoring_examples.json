@@ -1,0 +1,169 @@
+{
+  "dimensions": {
+    "semantic": {
+      "name": "基本语义对齐",
+      "description": "核心语义是否表达准确；是否出现重大偏差",
+      "examples": {
+        "1": {
+          "score": 1,
+          "label": "差 - 严重偏离语义",
+          "ref_video": "animals_and_ecology_multi_001",
+          "gen_video": "wan21",
+          "note": "示例：生成视频严重偏离prompt描述"
+        },
+        "2": {
+          "score": 2,
+          "label": "较差 - 明显语义偏差",
+          "ref_video": "animals_and_ecology_multi_002",
+          "gen_video": "kling",
+          "note": "示例：部分语义元素缺失或错误"
+        },
+        "3": {
+          "score": 3,
+          "label": "中等 - 基本符合但有瑕疵",
+          "ref_video": "food_multi_001",
+          "gen_video": "jimeng",
+          "note": "示例：核心语义正确但细节有偏差"
+        },
+        "4": {
+          "score": 4,
+          "label": "良好 - 语义准确",
+          "ref_video": "landscape_multi_002",
+          "gen_video": "opensora",
+          "note": "示例：语义表达准确，仅有轻微瑕疵"
+        },
+        "5": {
+          "score": 5,
+          "label": "优秀 - 完美语义对齐",
+          "ref_video": "architecture_single_001",
+          "gen_video": "cogfun",
+          "note": "示例：完全符合prompt描述"
+        }
+      }
+    },
+    "motion": {
+      "name": "运动",
+      "description": "运动是否自然、连贯，运动速度与方向是否与参考视频无明显差异，无明显卡顿与伪影",
+      "examples": {
+        "1": {
+          "score": 1,
+          "label": "差 - 严重卡顿或不自然",
+          "ref_video": "sports_competition_multi_002",
+          "gen_video": "videocrafter",
+          "note": "示例：严重卡顿、运动不连贯"
+        },
+        "2": {
+          "score": 2,
+          "label": "较差 - 运动明显异常",
+          "ref_video": "transportation_multi_001",
+          "gen_video": "wan21",
+          "note": "示例：运动速度或方向明显偏差"
+        },
+        "3": {
+          "score": 3,
+          "label": "中等 - 基本流畅",
+          "ref_video": "people_daily_multi_004",
+          "gen_video": "kling",
+          "note": "示例：运动基本流畅但有轻微不自然"
+        },
+        "4": {
+          "score": 4,
+          "label": "良好 - 运动自然",
+          "ref_video": "commercial_marketing_single_001",
+          "gen_video": "jimeng",
+          "note": "示例：运动自然连贯，仅有细微瑕疵"
+        },
+        "5": {
+          "score": 5,
+          "label": "优秀 - 运动完美",
+          "ref_video": "industrial_activity_multi_002",
+          "gen_video": "opensora",
+          "note": "示例：运动完全自然，无任何卡顿"
+        }
+      }
+    },
+    "temporal": {
+      "name": "事件时序一致性",
+      "description": "事件顺序是否正确、节奏是否合理",
+      "examples": {
+        "1": {
+          "score": 1,
+          "label": "差 - 时序完全混乱",
+          "ref_video": "food_multi_002",
+          "gen_video": "cogvideo_5b",
+          "note": "示例：事件顺序完全错误"
+        },
+        "2": {
+          "score": 2,
+          "label": "较差 - 时序明显错误",
+          "ref_video": "landscape_multi_003",
+          "gen_video": "videocrafter",
+          "note": "示例：事件顺序有明显问题"
+        },
+        "3": {
+          "score": 3,
+          "label": "中等 - 时序基本正确",
+          "ref_video": "animals_and_ecology_single_002",
+          "gen_video": "wan21",
+          "note": "示例：时序基本正确但节奏略有偏差"
+        },
+        "4": {
+          "score": 4,
+          "label": "良好 - 时序准确",
+          "ref_video": "sports_competition_single_003",
+          "gen_video": "kling",
+          "note": "示例：事件顺序正确，节奏合理"
+        },
+        "5": {
+          "score": 5,
+          "label": "优秀 - 时序完美",
+          "ref_video": "people_daily_single_005",
+          "gen_video": "jimeng",
+          "note": "示例：事件时序和节奏完美"
+        }
+      }
+    },
+    "realism": {
+      "name": "世界知识与功能性真实度",
+      "description": "是否符合常识/物理规律、交互是否可信",
+      "examples": {
+        "1": {
+          "score": 1,
+          "label": "差 - 严重违反常识",
+          "ref_video": "architecture_single_002",
+          "gen_video": "opensora",
+          "note": "示例：严重违反物理规律"
+        },
+        "2": {
+          "score": 2,
+          "label": "较差 - 明显不真实",
+          "ref_video": "transportation_multi_002",
+          "gen_video": "cogfun",
+          "note": "示例：交互不符合常识"
+        },
+        "3": {
+          "score": 3,
+          "label": "中等 - 基本真实",
+          "ref_video": "commercial_marketing_multi_002",
+          "gen_video": "cogvideo_5b",
+          "note": "示例：基本符合常识但有瑕疵"
+        },
+        "4": {
+          "score": 4,
+          "label": "良好 - 真实可信",
+          "ref_video": "industrial_activity_single_003",
+          "gen_video": "videocrafter",
+          "note": "示例：符合物理规律和常识"
+        },
+        "5": {
+          "score": 5,
+          "label": "优秀 - 完全真实",
+          "ref_video": "food_single_001",
+          "gen_video": "wan21",
+          "note": "示例：完全真实，交互可信"
+        }
+      }
+    }
+  }
+}
+
