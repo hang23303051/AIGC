@@ -18,6 +18,8 @@
 # ===================
 video/
 !video/.gitkeep
+video2/
+!video2/.gitkeep
 
 # 如果需要保留目录结构
 !video/refvideo/.gitkeep

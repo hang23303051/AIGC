@@ -1,0 +1,279 @@
+============================================================
+AI视频生成比较评测系统 - 快速启动指南
+============================================================
+
+【系统简介】
+  
+  本系统采用两两比较的方式评测AI视频生成模型，避免主观打分的偏见。
+  评审员观看参考视频和两个生成视频，选择更好的一个。
+  
+  核心特性：
+  - 两两配对比较（N个模型生成C(N,2)个任务）
+  - 三人评测制（每任务需3个评审员）
+  - 独立运行（与打分系统互不干扰）
+
+【首次部署】
+
+  1. 准备数据
+     命令：python scripts\prepare_data_compare.py
+     
+     功能：
+       - 扫描video/refvideo/（参考视频）
+       - 扫描video2/（生成视频）
+       - 生成两两配对任务清单
+     
+     注意：
+       - 确保video2目录存在且包含生成视频
+       - 每个sample_id至少需要2个模型的视频才能配对
+  
+  2. 初始化数据库
+     命令：python scripts\setup_project_compare.py --judges 10
+     
+     功能：
+       - 创建数据库aiv_compare_v1.db
+       - 创建10个评审员账户
+       - 导入视频和创建比较任务
+       - 随机分配任务给评审员
+     
+     参数：
+       --judges 10    评审员数量
+       --db <路径>    数据库路径（可选）
+       --csv <路径>   任务清单CSV（可选）
+  
+  3. 配置防火墙（可选，局域网访问需要）
+     命令：以管理员身份运行PowerShell
+           Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+           .\scripts\setup_firewall_compare.ps1
+     
+     功能：
+       - 开放端口8503（Streamlit UI）
+       - 开放端口8011（视频服务器）
+  
+  4. 启动服务
+     命令：.\lan_start_compare.ps1
+     
+     启动内容：
+       - Streamlit UI（端口8503）
+       - 视频HTTP服务器（端口8011）
+       - 视频监控服务（每5分钟扫描）
+  
+  5. 获取评审员链接
+     命令：python get_links_compare.py
+     
+     功能：
+       - 显示所有评审员的访问链接
+       - 包含本机和局域网访问地址
+     
+     示例输出：
+       【Judge-01】
+         本机访问: http://localhost:8503/?uid=abc123...
+         局域网访问: http://172.16.82.12:8503/?uid=abc123...
+
+【日常操作】
+
+  启动服务：
+    .\lan_start_compare.ps1
+  
+  停止服务：
+    .\lan_stop_compare.ps1
+  
+  查看进度：
+    python check_progress_compare.py
+  
+  导出数据：
+    .\export_all_compare.ps1
+    
+    导出文件：
+      - comparisons_long_*.csv    详细评测记录
+      - task_summary_*.csv        任务汇总
+      - model_stats_*.csv         模型统计
+      - summary_*.txt             进度摘要
+  
+  获取评审员链接：
+    python get_links_compare.py
+
+【监控功能】
+
+  自动监控（推荐）：
+    使用.\lan_start_compare.ps1启动时自动运行
+    
+    功能：
+      - 每5分钟扫描video2目录
+      - 检测新增视频并创建任务
+      - 检测删除视频并清理任务
+      - 支持动态添加新模型
+  
+  手动监控：
+    立即扫描一次：python scripts\monitor_new_videos_compare.py --once
+    持续监控：    python scripts\monitor_new_videos_compare.py
+  
+  添加新模型：
+    1. 在video2/下创建新模型文件夹
+       例如：video2/newmodel/newmodel/
+    2. 放置视频文件（文件名需匹配已有sample_id）
+    3. 监控脚本自动识别并创建比较任务
+
+【评测流程】
+
+  UI界面布局：
+    ┌─────────────────────────────────────────┐
+    │ 📝 视频描述：[Prompt文本]                │
+    ├────────────────┬────────────────────────┤
+    │  🎯 参考视频    │  🤖 生成视频A: [模型名] │
+    │  [播放器]      │  [播放器]              │
+    │               │                        │
+    │               │  🤖 生成视频B: [模型名] │
+    │               │  [播放器]              │
+    ├────────────────┴────────────────────────┤
+    │ 🎯 请选择更好的生成视频：                │
+    │  [✅选A] [✅选B] [🤷两者相当]           │
+    └─────────────────────────────────────────┘
+  
+  评测步骤：
+    1. 观看左侧的参考视频
+    2. 观看右侧上下叠放的两个生成视频
+    3. 点击按钮选择更好的一个
+    4. 可选添加评论说明理由
+    5. 提交后自动进入下一个任务
+  
+  任务完成条件：
+    - 每个任务需3个不同评审员评测
+    - 达到3次后自动标记完成
+    - 完成的任务从所有人列表中移除
+
+【任务生成逻辑】
+
+  配对规则：
+    对于每个参考视频，如果有N个生成视频（N≥2），
+    则生成C(N,2) = N×(N-1)/2个比较任务
+  
+  示例：
+    3个模型（sora2, cogfun, kling） → 3个任务
+      - sora2 vs cogfun
+      - sora2 vs kling
+      - cogfun vs kling
+    
+    4个模型 → 6个任务
+    5个模型 → 10个任务
+  
+  字母序约束：
+    model_a < model_b（字母序）
+    避免重复任务（如"A vs B"和"B vs A"）
+
+【目录结构】
+
+  关键目录：
+    video/refvideo/      参考视频（与打分模式共享）
+    video2/              生成视频（比较模式专用）
+    prompt/              Prompt文本（与打分模式共享）
+    
+    data/
+      comparison_tasks.csv    比较任务清单
+    
+    export_results_compare/   导出结果
+    
+    app/
+      streamlit_app_compare.py   比较模式UI
+    
+    scripts/
+      prepare_data_compare.py         数据准备
+      setup_project_compare.py        项目初始化
+      monitor_new_videos_compare.py   视频监控
+      export_ratings_compare.py       导出数据
+  
+  关键文件：
+    aiv_compare_v1.db              比较模式数据库
+    lan_start_compare.ps1          启动脚本
+    lan_stop_compare.ps1           停止脚本
+    check_progress_compare.py      进度查看
+    get_links_compare.py           获取评审员链接
+    README_COMPARE.md              详细文档
+
+【端口配置】
+
+  比较模式：
+    - UI端口：8503
+    - 视频服务端口：8011
+  
+  打分模式（原系统）：
+    - UI端口：8502
+    - 视频服务端口：8010
+  
+  可同时运行两个系统，端口不冲突。
+
+【常见问题】
+
+  Q: 没有任务显示？
+  A: 检查以下：
+     1. video2目录是否有足够的视频
+     2. 每个sample_id是否至少有2个模型的视频
+     3. 运行check_progress_compare.py查看任务数
+  
+  Q: 端口被占用？
+  A: 运行.\lan_stop_compare.ps1停止服务
+     或手动杀掉进程：
+       netstat -ano | findstr "8503"
+       taskkill /PID <PID> /F
+  
+  Q: 视频无法加载？
+  A: 1. 检查视频服务器是否启动（端口8011）
+     2. 检查视频文件路径是否正确
+     3. 重新准备数据：python scripts\prepare_data_compare.py
+  
+  Q: 如何添加新模型？
+  A: 1. 在video2/下创建新模型文件夹
+     2. 放置视频文件
+     3. 监控服务会自动识别并创建任务
+     4. 或手动运行：python scripts\monitor_new_videos_compare.py --once
+  
+  Q: 如何查看评测结果？
+  A: 1. 运行check_progress_compare.py查看进度
+     2. 运行export_all_compare.ps1导出详细数据
+     3. 查看export_results_compare目录
+
+【与打分模式的对比】
+
+  打分模式（原系统）：
+    - 数据库：aiv_eval_v4.db
+    - 端口：8502 + 8010
+    - 视频目录：video/genvideo/
+    - 评测方式：4维度打分（1-5分）
+    - 任务数：每个生成视频1个任务
+  
+  比较模式（新系统）：
+    - 数据库：aiv_compare_v1.db
+    - 端口：8503 + 8011
+    - 视频目录：video2/
+    - 评测方式：两两比较选择
+    - 任务数：每对生成视频1个任务
+  
+  两个系统完全独立，可同时运行。
+
+【快速命令参考】
+
+  # 首次部署
+  python scripts\prepare_data_compare.py
+  python scripts\setup_project_compare.py --judges 10
+  .\lan_start_compare.ps1
+  python get_links_compare.py
+  
+  # 日常使用
+  .\lan_start_compare.ps1              # 启动
+  .\lan_stop_compare.ps1               # 停止
+  python check_progress_compare.py     # 查看进度
+  .\export_all_compare.ps1             # 导出数据
+  python get_links_compare.py          # 获取链接
+  
+  # 监控
+  python scripts\monitor_new_videos_compare.py --once   # 立即扫描
+  python scripts\monitor_new_videos_compare.py          # 持续监控
+
+【联系方式】
+
+  Email: qihang6@mail2.sysu.edu.cn
+  GitHub: https://github.com/hang23303051/AIGC
+
+============================================================
+祝评测顺利！
+============================================================
+

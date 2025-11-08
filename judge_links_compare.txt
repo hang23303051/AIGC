@@ -1,0 +1,13 @@
+比较评测模式 - 评审员访问链接
+================================================================================
+
+Judge-01: http://<本机IP>:8503/?uid=a365d62b-dda0-404b-8ee7-2aaf97914d09
+Judge-02: http://<本机IP>:8503/?uid=a90aa15a-a114-4425-8c8d-9782112cf2ec
+Judge-03: http://<本机IP>:8503/?uid=e73abfd7-1c1d-4e60-8eb2-79f956ce5b3d
+Judge-04: http://<本机IP>:8503/?uid=71b2832b-2e57-4023-884c-68bff6583cd4
+Judge-05: http://<本机IP>:8503/?uid=c041caa4-7225-44de-b06b-c7cddd7d0b41
+Judge-06: http://<本机IP>:8503/?uid=c6bcdf62-9c18-4686-bdab-87c192560681
+Judge-07: http://<本机IP>:8503/?uid=071a7769-7c9c-49ba-9da2-ea3ba9853ed1
+Judge-08: http://<本机IP>:8503/?uid=fe0a510f-0a92-4123-ab78-eb16b01952c2
+Judge-09: http://<本机IP>:8503/?uid=58a82b20-0262-4211-ac3d-46314e6e738a
+Judge-10: http://<本机IP>:8503/?uid=506ad886-44f6-4214-b493-c70eb7dde689
